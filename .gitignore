@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# MinMixer
+runs/
+data/
+weights/
+!src/data/
