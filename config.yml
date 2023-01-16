@@ -28,7 +28,7 @@ trainer:
   num_update_steps: 10000000
   batch_size: 64
   learning_rate: 6.0e-4
-  weight_decay: 0
+  weight_decay: 1.0e-5
   gradient_clipping:
     is_activated: false 
     max_norm: 1.0

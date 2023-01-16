@@ -121,7 +121,7 @@ class Trainer:
 
                 update_step += 1
 
-            self.prob += 0.001
+            self.prob += 0.005
             self.prob = min(self.prob, 1.0)
             evolve_layer(model=model, prob=self.prob)
 
