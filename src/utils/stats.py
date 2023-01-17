@@ -27,4 +27,4 @@ def comp_stats_classification(model, criterion, data_loader) -> tuple[float, flo
 
     model.train()
 
-    return loss, accuracy 
+    return loss, accuracy

@@ -26,26 +26,18 @@ python train.py
 
 # Weight Visualization
 
-Some important metrics and trained parameters of the token-mixing MLP blocks can be visualized with Tensorboard:
+Besides loss and accuracy, the weights of the token-mixing MLP blocks can be visualized with Tensorboard:
 
 ```console
 cd MinMixer 
 tensorboard --logdir runs/
 ```
 
-The following visualizations show some of the weights learned during training by the token-mixing MLPs.
+The following visualizations show some of the parameters learned during training by the token-mixing MLPs.
 
 <center>
 
 ![](/assets/images/weights.png)
-
-</center>
-
-<center>
-
-| Layer 1 | Layer 2 | Layer 3  | Layer 4  | Layer 5  | Layer 6  | Layer 7  | Layer 8 |
-|---|---|---|---|---|---|---|---|
-| ![](/docs/images/layer_01.png) | ![](/docs/images/layer_02.png) | ![](/docs/images/layer_03.png) | ![](/docs/images/layer_04.png) | ![](/docs/images/layer_05.png) | ![](/docs/images/layer_06.png) | ![](/docs/images/layer_07.png) | ![](/docs/images/layer_08.png)
 
 </center>
 

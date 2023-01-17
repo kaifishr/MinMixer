@@ -1,5 +1,6 @@
-import numpy
 import random
+
+import numpy
 import torch
 import torchvision
 from torch.utils.data import DataLoader
@@ -33,11 +34,9 @@ def get_dataloader(config: Config) -> tuple[DataLoader, DataLoader]:
 
         transform_train = torchvision.transforms.Compose(
             [
-                # torchvision.transforms.RandomCrop(32, padding=4),
                 torchvision.transforms.RandomHorizontalFlip(),
                 torchvision.transforms.RandomVerticalFlip(),
-                # torchvision.transforms.RandomRotation(degrees=(0, 180)),
-                # torchvision.transforms.ColorJitter(brightness=0.5, hue=0.3),
+                torchvision.transforms.ColorJitter(brightness=0.5, hue=0.3),
                 torchvision.transforms.ToTensor(),
                 torchvision.transforms.RandomErasing(),
                 torchvision.transforms.Normalize(mean, std),
@@ -45,28 +44,21 @@ def get_dataloader(config: Config) -> tuple[DataLoader, DataLoader]:
         )
 
         transform_test = torchvision.transforms.Compose(
-            [
-                torchvision.transforms.ToTensor(), 
-                torchvision.transforms.Normalize(mean, std)
-            ]
+            [torchvision.transforms.ToTensor(), torchvision.transforms.Normalize(mean, std)]
         )
 
         train_dataset = torchvision.datasets.CIFAR10(
             root="./data", train=True, download=True, transform=transform_train
         )
 
-        test_dataset = torchvision.datasets.CIFAR10(
-            root="./data", train=False, download=True, transform=transform_test
-        )
+        test_dataset = torchvision.datasets.CIFAR10(root="./data", train=False, download=True, transform=transform_test)
+
+        # Add number of classes and input shape to config
+        config.data.num_classes = 10
+        config.data.input_shape = (3, 32, 32)
 
     else:
-        raise Exception(
-            f"Dataset {dataset} not available."
-        )
-
-    # Add number of classes and input shape to config
-    config.data.num_classes = 10
-    config.data.input_shape = (3, 32, 32)
+        raise Exception(f"Dataset {dataset} not available.")
 
     generator = torch.Generator()
     generator.manual_seed(config.random_seed)

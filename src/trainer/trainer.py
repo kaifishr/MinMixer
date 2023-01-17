@@ -9,7 +9,6 @@ from src.config.config import Config
 from src.summary.summary import add_graph
 from src.summary.summary import add_linear_weights
 from src.utils.stats import comp_stats_classification
-from src.utils.tools import evolve_layer
 
 
 class Trainer:
@@ -64,8 +63,6 @@ class Trainer:
         self.running_loss = 0.0
         self.running_accuracy = 0.0
         self.running_counter = 0
-        self.prob = 0.01
-        # self.prob = 1.0
 
     def run(self):
         """Main training logic."""
@@ -79,24 +76,22 @@ class Trainer:
 
         train_loader, test_loader = self.dataloader
 
-        evolve_layer(model=model, prob=self.prob)
-
         update_step = 0
 
         while update_step < self.num_update_steps:
 
             for x_data, y_data in train_loader:
 
-                # Get the inputs and labels.
+                # Get the inputs and labels
                 inputs, labels = x_data.to(device), y_data.to(device)
 
-                # Zero the parameter gradients.
+                # Zero the parameter gradients
                 optimizer.zero_grad(set_to_none=True)
 
-                # Feedforward.
+                # Feedforward
                 outputs = model(inputs)
 
-                # Compute loss.
+                # Compute loss
                 loss = criterion(outputs, labels)
 
                 # Backpropagation
@@ -110,7 +105,6 @@ class Trainer:
                 # Gradient descent
                 optimizer.step()
 
-                # keeping track of statistics
                 self.running_loss += loss.item()
                 self.running_accuracy += (torch.argmax(outputs, dim=1) == labels).float().sum()
                 self.running_counter += labels.size(0)
@@ -120,10 +114,6 @@ class Trainer:
                 self._write_summary(writer=writer, model=model, update_step=update_step)
 
                 update_step += 1
-
-            self.prob += 0.005
-            self.prob = min(self.prob, 1.0)
-            evolve_layer(model=model, prob=self.prob)
 
         num_update_steps = config.trainer.num_update_steps
         self._write_summary(model=model, writer=writer, update_step=num_update_steps)
@@ -141,7 +131,6 @@ class Trainer:
 
                 writer.add_scalar("train/loss", train_loss, global_step=update_step)
                 writer.add_scalar("train/accuracy", train_accuracy, global_step=update_step)
-                writer.add_scalar("prob", self.prob, global_step=update_step)
 
                 self.running_loss = 0.0
                 self.running_accuracy = 0.0

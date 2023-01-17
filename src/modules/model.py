@@ -4,9 +4,8 @@ import torch.nn as nn
 
 from src.config import Config
 from src.modules.module import MixerBlock
-from src.modules.module import ImageToSequence 
+from src.modules.module import ImageToSequence
 from src.modules.module import Classifier
-from src.modules.layer import SimpleComplexLinear
 
 
 class MLPMixer(nn.Module):
@@ -28,8 +27,8 @@ class MLPMixer(nn.Module):
 
     def _init_weights(self, module: nn.Module) -> None:
         """Initializes weights for all modules."""
-        if isinstance(module, (nn.Linear, SimpleComplexLinear)):
-            torch.nn.init.normal_(module.weight, mean=0.0, std=0.01)
+        if isinstance(module, nn.Linear):
+            torch.nn.init.normal_(module.weight, mean=0.0, std=0.02)
             if module.bias is not None:
                 torch.nn.init.zeros_(module.bias)
         elif isinstance(module, nn.LayerNorm):

@@ -3,7 +3,6 @@ import torch
 import torch.nn as nn
 
 from src.config import Config
-from src.modules.layer import SimpleComplexLinear
 
 
 class ImageToSequence(nn.Module):
@@ -65,15 +64,10 @@ class MlpBlock(nn.Module):
 
         hidden_dim = int(expansion_factor * dim)
 
-        # self.mlp_block = nn.Sequential(
-        #     nn.Linear(in_features=dim, out_features=hidden_dim),
-        #     nn.GELU(),
-        #     nn.Linear(in_features=hidden_dim, out_features=dim),
-        # )
         self.mlp_block = nn.Sequential(
-            SimpleComplexLinear(in_features=dim, out_features=hidden_dim),
+            nn.Linear(in_features=dim, out_features=hidden_dim),
             nn.GELU(),
-            SimpleComplexLinear(in_features=hidden_dim, out_features=dim),
+            nn.Linear(in_features=hidden_dim, out_features=dim),
         )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:

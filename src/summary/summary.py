@@ -8,8 +8,6 @@ from torch import nn
 from torch.utils.tensorboard import SummaryWriter
 from torch.utils.data import DataLoader
 
-from src.modules.layer import SimpleComplexLinear
-
 
 def add_graph(model: nn.Module, dataloader: DataLoader, writer: SummaryWriter, config: dict) -> None:
     """Add graph of model to Tensorboard.
@@ -35,7 +33,7 @@ def add_linear_weights(
 ) -> None:
     """Adds visualization of channel and token embeddings to Tensorboard."""
     for name, module in model.named_modules():
-        if isinstance(module, (nn.Linear, SimpleComplexLinear)):
+        if isinstance(module, nn.Linear):
             weight = module.weight.detach().cpu().numpy()
 
             height, width = weight.shape
